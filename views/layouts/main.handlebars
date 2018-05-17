@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8"> {{!--
+	<link rel="stylesheet" href="/assets/css/style.css" type="text/css" /> --}}
+	<title>Burgers!</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery.js"></script> {{!--
+	<script src="/assets/js/cats.js"></script> --}}
+</head>
+
+<body style="margin:0 2%;">
+	{{{ body }}}
+</body>
+
+<script>
+	$(document).ready(function () {
+
+		$('#submit').on('click', function () {
+			event.preventDefault();
+			var burgerName = $('#newBurger').val();
+			console.log(burgerName);
+			var newLine = {
+				burger_name: burgerName,
+				devoured: 0
+			}
+			$.ajax("/api/burgers", {
+				type: "POST",
+				data: newLine
+			}).then(
+				function () {
+					console.log("Burger added");
+					// Reload the page to get the updated list
+				}
+			);
+			$('#newBurger').val('');
+			location.reload();
+		});
+
+
+
+	$('.delete-burger').on('click', function () {
+		event.preventDefault();
+		var id = $(this).data("id");
+    $.ajax("/api/burgers/" + id, {
+      type: "DELETE"
+    }).then(
+      function() {
+        console.log("deleted burger", id);
+      }
+    );
+       location.reload();
+	});
+
+
+
+
+
+	});
+
+</script>
+
+</html>
