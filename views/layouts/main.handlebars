@@ -2,12 +2,10 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8"> {{!--
-	<link rel="stylesheet" href="/assets/css/style.css" type="text/css" /> --}}
+	<meta charset="UTF-8">
 	<title>Burgers!</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-	<script src="https://code.jquery.com/jquery.js"></script> {{!--
-	<script src="/assets/js/cats.js"></script> --}}
+	<script src="https://code.jquery.com/jquery.js"></script>
 </head>
 
 <body style="margin:0 2%;">
@@ -31,7 +29,6 @@
 			}).then(
 				function () {
 					console.log("Burger added");
-					// Reload the page to get the updated list
 				}
 			);
 			$('#newBurger').val('');
@@ -40,20 +37,42 @@
 
 
 
-	$('.delete-burger').on('click', function () {
-		event.preventDefault();
-		var id = $(this).data("id");
-    $.ajax("/api/burgers/" + id, {
-      type: "DELETE"
-    }).then(
-      function() {
-        console.log("deleted burger", id);
-      }
-    );
-       location.reload();
-	});
+		$('.delete-burger').on('click', function () {
+			event.preventDefault();
+			var id = $(this).data("id");
+			$.ajax("/api/burgers/" + id, {
+				type: "DELETE"
+			}).then(
+				function () {
+					console.log("deleted burger", id);
+				}
+			);
+			location.reload();
+		});
 
+		$('.change-devoured').on('click', function () {
+			event.preventDefault();
 
+			var id = $(this).data("id");
+			var devoured = $(this).data("devoured");
+
+			var newDevoured = Math.abs(devoured - 1)
+
+			var devourChange = {
+				id: id,
+				devoured: newDevoured
+			};
+
+			$.ajax("/api/burgers/" + id, {
+				type: "PUT",
+				data: devourChange
+			}).then(
+				function () {
+					console.log("updated burger");
+				}
+			);
+			location.reload();
+		});
 
 
 
